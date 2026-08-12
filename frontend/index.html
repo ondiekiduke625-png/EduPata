@@ -1,1 +1,32 @@
-frontend/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduPata Registration</title>
+</head>
+<body>
+
+  <h1>EduPata</h1>
+  <h2>Student Registration</h2>
+
+  <form>
+    <label>Full Name</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label>Phone Number</label><br>
+    <input type="tel" name="phone" required><br><br>
+
+    <label>Education Level</label><br>
+    <select name="educationLevel" required>
+      <option value="">Select education level</option>
+      <option value="Secondary">Secondary</option>
+      <option value="College">College</option>
+      <option value="University">University</option>
+    </select><br><br>
+
+    <button type="submit">Register</button>
+  </form>
+
+</body>
+</html>
