@@ -1,219 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduPata - Student Registration</title>
+<script>
+  const form = document.getElementById("registrationForm");
+  const button = document.getElementById("registerButton");
+  const message = document.getElementById("message");
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      color: #1f2937;
-    }
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const level = document.getElementById("level").value;
 
-    .header {
-      background: #0f766e;
-      color: white;
-      padding: 25px 20px;
-      text-align: center;
-    }
+    message.textContent = "Registering...";
+    message.className = "";
+    button.disabled = true;
 
-    .header h1 {
-      margin: 0;
-      font-size: 32px;
-    }
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          fullName: name,
+          phoneNumber: phone,
+          email: email || null,
+          educationLevel: level
+        })
+      });
 
-    .header p {
-      margin: 8px 0 0;
-    }
+      const data = await response.json();
 
-    .container {
-      max-width: 500px;
-      margin: 35px auto;
-      padding: 20px;
-    }
-
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-    }
-
-    h2 {
-      text-align: center;
-      margin-top: 0;
-    }
-
-    label {
-      display: block;
-      margin-top: 18px;
-      margin-bottom: 7px;
-      font-weight: bold;
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      margin-top: 25px;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
-      background: #0f766e;
-      color: white;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      background: #9ca3af;
-    }
-
-    #message {
-      text-align: center;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-
-    .success {
-      color: #15803d;
-    }
-
-    .error {
-      color: #dc2626;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="header">
-    <h1>EduPata</h1>
-    <p>Your education journey starts here.</p>
-  </div>
-
-  <div class="container">
-    <div class="card">
-
-      <h2>Student Registration</h2>
-
-      <form id="registrationForm">
-
-        <label for="name">Full Name</label>
-        <input
-          type="text"
-          id="name"
-          placeholder="Enter your full name"
-          required
-        >
-
-        <label for="phone">Phone Number</label>
-        <input
-          type="tel"
-          id="phone"
-          placeholder="e.g. 0712345678"
-          required
-        >
-
-        <label for="email">Email Address</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Optional"
-        >
-
-        <label for="level">Education Level</label>
-        <select id="level" required>
-          <option value="">Select education level</option>
-          <option value="Secondary">Secondary</option>
-          <option value="College">College</option>
-          <option value="University">University</option>
-        </select>
-
-        <button type="submit" id="registerButton">
-          Register
-        </button>
-
-      </form>
-
-      <p id="message"></p>
-
-    </div>
-  </div>
-
-  <script>
-    const form = document.getElementById("registrationForm");
-    const button = document.getElementById("registerButton");
-    const message = document.getElementById("message");
-
-    form.addEventListener("submit", async function(event) {
-      event.preventDefault();
-
-      const name = document.getElementById("name").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const level = document.getElementById("level").value;
-
-      message.textContent = "Registering...";
-      message.className = "";
-      button.disabled = true;
-
-      try {
-        const response = await fetch("/api/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            fullName: name,
-            phoneNumber: phone,
-            email: email || null,
-            educationLevel: level
-          })
-        res.status(201).json({
-      message: "Registration successful! Welcome to EduPata.",
-      student: result.rows[0]
-    });
-
-  } catch (error) {
-    console.error("Registration error:", error);
-
-    res.status(500).json({
-      message: error.message || "Registration failed."
-    });
-  }
-});
-        const data = await response.json();
-
-        if (response.ok) {
-          message.textContent = data.message;
-          message.className = "success";
-          form.reset();
-        } else {
-          message.textContent =
-            data.message || "Registration failed.";
-          message.className = "error";
-        ";
+      if (response.ok) {
+        message.textContent = data.message;
+        message.className = "success";
+        form.reset();
+      } else {
+        message.textContent = data.message || "Registration failed.";
+        message.className = "error";
       }
 
-      button.disabled = false;
-    });
-  </script>
+    } catch (error) {
+      console.error("Registration error:", error);
+      message.textContent = "Could not connect to EduPata server.";
+      message.className = "error";
+    }
 
-</body>
-</html>
+    button.disabled = false;
+  });
+</script>
