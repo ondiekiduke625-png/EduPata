@@ -10,7 +10,6 @@ async function initializeDatabase() {
     )
   `);
 
-  // Add missing columns to an existing students table
   await pool.query(`
     ALTER TABLE students
       ADD COLUMN IF NOT EXISTS full_name VARCHAR(255),
