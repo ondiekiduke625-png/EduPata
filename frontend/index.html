@@ -185,8 +185,19 @@
             email: email || null,
             educationLevel: level
           })
-        });
+        res.status(201).json({
+      message: "Registration successful! Welcome to EduPata.",
+      student: result.rows[0]
+    });
 
+  } catch (error) {
+    console.error("Registration error:", error);
+
+    res.status(500).json({
+      message: error.message || "Registration failed."
+    });
+  }
+});
         const data = await response.json();
 
         if (response.ok) {
@@ -197,12 +208,7 @@
           message.textContent =
             data.message || "Registration failed.";
           message.className = "error";
-        }
-
-      } catch (error) {
-        message.textContent =
-          "Could not connect to EduPata server.";
-        message.className = "error";
+        ";
       }
 
       button.disabled = false;
