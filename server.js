@@ -42,15 +42,10 @@ async function initializeDatabase() {
 initializeDatabase().catch((error) => {
   console.error("Database initialization failed:", error);
 });
-
 // Home
 app.get("/", (req, res) => {
-  res.json({
-    message: "EduPata backend is running",
-    status: "ok"
-  });
+  res.sendFile(path.join(process.cwd(), "frontend", "index.html"));
 });
-
 // Health check
 app.get("/health", (req, res) => {
   res.status(200).json({
